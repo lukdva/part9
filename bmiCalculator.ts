@@ -41,6 +41,8 @@ interface bodyValues {
     weight: number;
 }
 
-const arguments = parseArguments(process.argv)
-console.log(calculateBmi(arguments.height, arguments.weight))
+const dimensions = parseArguments(process.argv)
+console.log(calculateBmi(dimensions.height, dimensions.weight))
 console.log(calculateBmi(180, 74))
+
+//TODO fix errors
