@@ -35,7 +35,27 @@ const calculateExercises = (arr: Array<number>, goal: number): response => {
     }
     return resp
 }
-
+const parseExerciseArguments = (args: string[]): arguments => {
+    if (args.length < 4 ) throw new Error('Not enough arguments')
+    const goal: number = Number(args[2])
+    const arr: number[] = args.slice(3).map((x) => Number(x))
+    if(isNaN(goal)) {
+        throw new Error(`One of the arguments is not a number`)
+    }
+    arr.forEach((x) => { 
+        if(isNaN(x)) {
+            throw new Error(`One of the arguments is not a number`)
+        }  
+    })
+    return {
+        goal,
+        arr
+    }
+}
+interface arguments {
+    goal: number;
+    arr: number[];
+}
 interface response {
     periodLength: number,
     trainingDays: number,
@@ -45,5 +65,6 @@ interface response {
     target: number,
     average: number
 }
+const args = parseExerciseArguments(process.argv)
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+console.log(calculateExercises(args.arr, args.goal))
