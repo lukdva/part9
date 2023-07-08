@@ -1,5 +1,4 @@
 const calculateExercises = (arr: Array<number>, goal: number): response => {
-    const x = []
     const sum = arr.reduce( (prev: number, curr: number) => prev + curr, 0)
     const avg = sum/arr.length
     let rating
