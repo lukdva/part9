@@ -1,14 +1,17 @@
-import patients from '../data/patients';
-import { Patient, PatientNonSensitive } from "../models/types";
+import { Patient, PatientNonSensitive, NewPatientEntry } from "../models/types";
+import patientRepository from '../repositories/patientRepository';
 
 const getPatientsWithoutSensitiveInfo = (): PatientNonSensitive[] => {
-  return patients.map(({id, name, dateOfBirth, occupation, gender}) => ({id, name, dateOfBirth, occupation, gender}));
+  return patientRepository.getAll().map(({id, name, dateOfBirth, occupation, gender}) => ({id, name, dateOfBirth, occupation, gender}));
 };
 const getPatients = (): Patient[] => {
-    return patients;
-  };
-
+    return patientRepository.getAll();
+};
+const addPatient = (newPatient: NewPatientEntry) => {
+    return patientRepository.add(newPatient);
+};
 export default {
     getPatientsWithoutSensitiveInfo,
-    getPatients
+    getPatients,
+    addPatient
 };
