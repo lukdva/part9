@@ -1,6 +1,7 @@
 import React from 'react';
 import { NonSensitiveDiaryEntry } from '../types' 
 import DiaryEntry from './DiaryEntry';
+import Header from './Header';
 
 interface DiaryEntriesProps {
    diaries: NonSensitiveDiaryEntry[];
@@ -9,7 +10,7 @@ interface DiaryEntriesProps {
 function DiaryEntries(props: DiaryEntriesProps) {
   return (
     <>
-        <h1>Diary entries</h1>
+        <Header text="Diary entries"/>
         {props.diaries.map( diary => <DiaryEntry key={diary.id} diary={diary}/> )}
     </>
   );
