@@ -2,11 +2,15 @@ import React from "react";
 import Header from './Header'
 import { useState } from "react";
 import { createNewDiary } from "../services/diaryService";
-import { NonSensitiveDiaryEntry, Visibility, Weather, DiaryEntry } from "../types";
+import { NonSensitiveDiaryEntry, Visibility, Weather, NotificationType } from "../types";
+import { AxiosError } from "axios";
+import axios from "axios";
 
 interface diaryFormProps {
     diaries: NonSensitiveDiaryEntry[]
     setDiaries: React.Dispatch<React.SetStateAction<NonSensitiveDiaryEntry[]>>;
+    setNotificationType: React.Dispatch<React.SetStateAction<NotificationType>>;
+    setMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 const DiaryForm = (props: diaryFormProps) => {
     const [date, setDate] = useState('');
@@ -16,13 +20,24 @@ const DiaryForm = (props: diaryFormProps) => {
     
     const handleDiarySubmit = (event: React.SyntheticEvent) => {
         event.preventDefault();
-        const createdDiary =  createNewDiary({date, visibility: visibility as Visibility, weather: weather as Weather, comment}).then( createdDiary => {
+        const createdDiary =  createNewDiary({date, visibility: visibility as Visibility, weather: weather as Weather, comment})
+        .then( createdDiary => {
             props.setDiaries(props.diaries.concat(createdDiary));
+            setDate('');
+            setVisibility('');
+            setWeather('');
+            setComment('');
+        })
+        .catch(error => {
+            if(axios.isAxiosError(error)) {
+                props.setMessage(error.response?.data);
+                props.setNotificationType(NotificationType.Error);
+                setTimeout(() => {
+                    props.setMessage('')
+                }, 3000)
+            }
         });
-        setDate('');
-        setVisibility('');
-        setWeather('');
-        setComment('');
+
     }
 
     return (

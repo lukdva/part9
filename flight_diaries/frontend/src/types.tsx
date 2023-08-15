@@ -24,3 +24,8 @@ export enum Weather {
   export type NewDiaryEntry = Omit<DiaryEntry, 'id'>;
   
   export type NonSensitiveDiaryEntry = Omit<DiaryEntry, 'comment'>;
+
+  export enum NotificationType {
+    Error = 'error',
+    Success = 'success'
+  }
