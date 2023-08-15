@@ -3,7 +3,6 @@ import Header from './Header'
 import { useState } from "react";
 import { createNewDiary } from "../services/diaryService";
 import { NonSensitiveDiaryEntry, Visibility, Weather, NotificationType } from "../types";
-import { AxiosError } from "axios";
 import axios from "axios";
 
 interface diaryFormProps {
@@ -14,18 +13,22 @@ interface diaryFormProps {
 }
 const DiaryForm = (props: diaryFormProps) => {
     const [date, setDate] = useState('');
-    const [visibility, setVisibility] = useState('');
-    const [weather, setWeather] = useState('');
+    const [visibility, setVisibility] = useState(Visibility.Great);
+    const [weather, setWeather] = useState(Weather.Sunny);
     const [comment, setComment] = useState('');
-    
+
+    const styles: React.CSSProperties = {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '10px'
+    }
+
     const handleDiarySubmit = (event: React.SyntheticEvent) => {
         event.preventDefault();
         const createdDiary =  createNewDiary({date, visibility: visibility as Visibility, weather: weather as Weather, comment})
         .then( createdDiary => {
             props.setDiaries(props.diaries.concat(createdDiary));
             setDate('');
-            setVisibility('');
-            setWeather('');
             setComment('');
         })
         .catch(error => {
@@ -43,38 +46,49 @@ const DiaryForm = (props: diaryFormProps) => {
     return (
         <>
             <Header text="Add new entry"/>
-            <p>
-
-            </p>
             <form onSubmit={handleDiarySubmit}>
-                <p>
+                <div>
                     <label>date: </label>
                     <input 
-                    type='text' 
+                    type='date' 
                     name='Date'
                     value={date}
                     onChange={({target}) => setDate(target.value)}
                     />
-                </p>
-                <p>
-                    <label>visibility: </label>
-                    <input 
-                    type='text' 
-                    name='Visibility'
-                    value={visibility}
-                    onChange={({target}) => setVisibility(target.value)}
-                    />
-                </p>
-                <p>
-                    <label>weather: </label>
-                    <input 
-                    type='text' 
-                    name='Weather'
-                    value={weather}
-                    onChange={({target}) => setWeather(target.value)}
-                    />
-                </p>
-                <p>
+                </div>
+                <div>
+                    <label>Visibility: </label>
+                    <div style={styles}>
+                        {Object.values(Visibility).map(v => 
+                            <div key={v}>
+                                <label>{v}</label>
+                                <input 
+                                type='radio' 
+                                name='Visibility'
+                                checked={visibility === v}
+                                onChange={() => setVisibility(v)}
+                                />
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div>
+                    <label>Weather: </label>
+                    <div style={styles}>
+                        {Object.values(Weather).map(w => 
+                            <div key={w}>
+                                <label>{w}</label>
+                                <input 
+                                type='radio' 
+                                name='Weather'
+                                checked={weather === w}
+                                onChange={() => setWeather(w)}
+                                />
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div>
                     <label>comment: </label>
                     <input 
                     type='text' 
@@ -82,7 +96,7 @@ const DiaryForm = (props: diaryFormProps) => {
                     value={comment}
                     onChange={({target}) => setComment(target.value)}
                     />
-                </p>
+                </div>
                 <button type='submit'>Add</button>
             </form>
         </>
