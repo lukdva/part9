@@ -15,4 +15,8 @@ const add = (newPatient: NewPatientEntry): Patient => {
     patients.push(patient);
     return patient;
 };
-export default { getAll, add};
+
+const getById = (id: string): Patient | undefined => {
+    return patients.find(patient => patient.id === id);
+};
+export default { getAll, add, getById};
