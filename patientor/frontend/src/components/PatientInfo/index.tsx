@@ -5,6 +5,7 @@ import { Patient } from "../../types";
 import patientService from "../../services/patients";
 import { useMatch } from "react-router-dom";
 import GenderIcon from "./GenderIcon";
+import EntryInfoList from "./EntryInfoList";
 
 const PatientInfo = () => {
     const [patient, setPatient] = useState<Patient|undefined>();
@@ -29,6 +30,7 @@ const PatientInfo = () => {
             </Box>
             <Typography>ssn: {patient.ssn}</Typography>
             <Typography>occupation: {patient.occupation}</Typography>
+            <EntryInfoList entries={patient.entries}/>
         </div>
     )
     :
